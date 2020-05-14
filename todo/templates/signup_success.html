@@ -1,0 +1,16 @@
+{% extends 'centered.html' %}
+
+{% block centered_content %}
+  <div class="col">
+    <div class="card bg-light mt-5">
+      <div class="card-header">
+        <h3>Signup Success</h3>
+      </div>
+      <div class="card-body">
+        <p>Thank you {{ username }}! You've been successfully signed up!</p>
+        <p>Please login to start making todo lists.</p>
+        <a href="{% url 'login' %}" class="btn btn-block">Login</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

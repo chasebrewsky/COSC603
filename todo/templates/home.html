@@ -1,0 +1,12 @@
+{% extends 'authenticated.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block main_content %}
+  <div class="text-center">
+    <p class="lead">
+      Select a todo list from the left or create a new list.
+    </p>
+    <a href="{% url 'create_list' %}" class="btn btn-outline-primary">Create List</a>
+  </div>
+{% endblock %}
