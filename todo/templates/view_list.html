@@ -1,0 +1,43 @@
+{% extends 'authenticated.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block main_content %}
+  <h3>{{ todo_list.name }}</h3>
+  <form method="POST">
+    {% if todos.exists %}
+      <table class="table">
+        <tbody>
+          {% for todo in todos.all %}
+            <tr>
+              <td style="width: 1%"><input type="checkbox" name="todo_ids" value="{{ todo.id }}" /></td>
+              <td style="width: 1%"><a href="{% url 'edit_todo' todo.id %}" class="btn btn-outline-secondary btn-sm">Edit</a></td>
+              <td>{{ todo.description }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="text-center text-muted mt-3">
+        No todos made.
+      </p>
+    {% endif %}
+  {% csrf_token %}
+  <button type="submit" name="action" value="complete" class="btn btn-outline-success">Complete</button>
+  <button type="submit" name="action" value="delete" class="btn btn-outline-danger">Delete</button>
+  <a href="{% url 'create_todo' todo_list.id %}" class="btn btn-primary float-right">Create</a>
+  {% if completed_todos.exists %}
+      <h4 class="mt-4">Completed</h4>
+      <table class="table">
+        <tbody>
+          {% for todo in completed_todos.all %}
+            <tr>
+              <td class="text-muted">{{ todo.description }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+  </form>
+
+{% endblock %}

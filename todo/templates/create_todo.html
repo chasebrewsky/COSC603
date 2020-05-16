@@ -1,0 +1,12 @@
+{% extends 'authenticated.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block main_content %}
+  <h3>Create Todo</h3>
+  <form method="POST">
+    {% csrf_token %}
+    {{ form | crispy }}
+    <button type="submit" class="btn btn-primary">Create</button>
+  </form>
+{% endblock %}

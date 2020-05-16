@@ -1,0 +1,23 @@
+{% extends 'centered.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block centered_content %}
+  <div class="col">
+    <div class="card bg-light mt-5">
+      <div class="card-header">
+        <h3>Signup</h3>
+      </div>
+      <div class="card-body">
+        <form method="post">
+          {{ form | crispy }}
+          {% csrf_token %}
+          <div class="btn-group d-flex">
+            <a href="{% url 'login' %}" class="btn btn-outline-secondary w-100" role="button">Cancel</a>
+            <input class="btn btn-primary w-100" type="submit" value="Submit">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
