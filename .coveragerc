@@ -1,0 +1,11 @@
+[run]
+branch = true
+omit =
+  */tests.py
+  */tests/*
+  */migrations/*
+  */wsgi.py
+  */asgi.py
+  */settings.py
+  */apps.py
+source = todo

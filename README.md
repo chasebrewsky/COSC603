@@ -45,3 +45,11 @@ Make sure to run through the tutorial to make a basic app, then come back here t
 We'll be using SQLite as the database since it requires minimal setup.
 
 Each member will be responsible for their own tests. If more features need to be added to test, please contact me.
+
+## Testing
+
+Running the tests is done through an automated testing tool called [tox](https://tox.readthedocs.io/en/latest/). This tool will run the tests in the current environment and output the coverage results in both the console and in HTML form in the subdirectory `htmlcov`.
+
+In order to run tox, you first have to install it by running `pip install tox`, or if you're Sonny it's `pip3 install tox` because his python environment is messed up.
+
+After installing it, just run `tox` in the root of the project directory and it should run the tests. Contact me if you run into any issues with it.
