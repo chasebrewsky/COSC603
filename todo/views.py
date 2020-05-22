@@ -101,6 +101,8 @@ def create_todo(request: HttpRequest, list_id: int = 0):
         'todo_lists': TodoList.objects.filter(user=request.user).all()
     }
     todo_list = get_object_or_404(TodoList, pk=list_id)
+    if todo_list.user != request.user:
+        raise Http404
     if request.method == 'POST':
         form = TodoForm(request.POST)
         if not form.is_valid():
