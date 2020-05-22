@@ -1,6 +1,8 @@
-# COSC 603 ToDo app
+# COSC 603 Todo app
 
-This the the repository for the COSC 604 testing ToDo app.
+[![Build Status](https://travis-ci.org/chasebrewsky/COSC603.svg?branch=master)](https://travis-ci.org/chasebrewsky/COSC603)
+
+This the the repository for the COSC 604 testing Todo app.
 
 ## Setup
 
