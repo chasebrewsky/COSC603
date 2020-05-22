@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import IntegrityError
 from django.test import TestCase, Client
+from django.urls import reverse, resolve
 from todo.forms import SignupForm, TodoListForm, TodoForm, TodoBulkEditForm
 from todo.models import Todo, TodoList
 from todo.views import login, signup, home, view_list, create_list, create_todo, edit_todo
@@ -144,6 +145,7 @@ class TestTodoBulkEditForm(TestCase):
         )
 
 class TodoTests(TestCase):
+
     def test_string_representation(self):
         entry = TodoList(name="My entry name")
         self.assertEqual(str(entry), entry.name)
@@ -160,6 +162,13 @@ class TodoTests(TestCase):
         entry = Todo(description="My description name")
         self.assertEqual(str(entry), entry.description)
 
+    def test_home_url(self):
+        url = reverse('home')
+        self.assertEquals(resolve(url).func, home)
+
+    def test_create_list_url(self):
+        url = reverse('create_list')
+        self.assertEquals(resolve(url).func, create_list)
 
     def test_homepage(self):
         response = self.client.get('/')
