@@ -21,6 +21,36 @@ class TestSignupForm(TestCase):
             description='Something'
         )
 
+    def test_email_blank_on_load(self):
+        """Email should be blank on load"""
+        response = self.client.get('/signup/')
+        self.assertEquals(response.context['form']['email'].value(), None)
+
+    def test_user_blank_on_load(self):
+        """User should be blank on load"""
+        response = self.client.get('/signup/')
+        self.assertEquals(response.context['form']['username'].value(), None)
+
+    def test_password_blank_on_load(self):
+        """User should be blank on load"""
+        response = self.client.get('/signup/')
+        self.assertEquals(response.context['form']['password'].value(), None)
+
+    def test_password_blank_on_load(self):
+        """User should be blank on load"""
+        response = self.client.get('/signup/')
+        self.assertEquals(response.context['form']['password_repeated'].value(), None)
+
+    def test_first_name_blank_on_load(self):
+        """User should be blank on load"""
+        response = self.client.get('/signup/')
+        self.assertEquals(response.context['form']['first_name'].value(), None)
+
+    def test_last_name_blank_on_load(self):
+        """User should be blank on load"""
+        response = self.client.get('/signup/')
+        self.assertEquals(response.context['form']['last_name'].value(), None)
+
     def test_username_exists(self):
         """Form should not be valid if existing username."""
         data = {
@@ -33,6 +63,20 @@ class TestSignupForm(TestCase):
         self.assertFalse(form.is_valid())
         self.assertEquals({
             'username': ['User with username already exists'],
+        }, form.errors)
+
+    def test_username_is_not_blank(self):
+        """Form checks if username is blank"""
+        data = {
+            'username': '',
+            'email': 'another9@email.com',
+            'password': 'password',
+            'password_repeated': 'password',
+        }
+        form = SignupForm(data=data)
+        self.assertFalse(form.is_valid())
+        self.assertEquals({
+            'username': ['This field is required.'],
         }, form.errors)
 
     def test_username_available(self):
@@ -60,16 +104,19 @@ class TestSignupForm(TestCase):
             'email': ['User with email already exists'],
         }, form.errors)
 
-    def test_email_available(self):
-        """Form should valid if existing email."""
+    def test_email_is_not_blank(self):
+        """Form is not valid if email is blank"""
         data = {
-            'username': 'test4',
-            'email': 'user@gmail.com',
+            'username': 'username9',
+            'email': '',
             'password': 'password',
             'password_repeated': 'password',
         }
         form = SignupForm(data=data)
-        self.assertTrue(form.is_valid())
+        self.assertFalse(form.is_valid())
+        self.assertEquals({
+            'email': ['This field is required.'],
+        }, form.errors)
 
     def test_password_matches(self):
         """Form should not be valid if passwords don't match"""
@@ -111,7 +158,14 @@ class TestTodoListForm(TestCase):
     """Tests for the todo list form."""
     def setUp(self):
         self.user = get_user_model().objects.create(
-             username='user', email='user@email.com',
+            username='user', email='user@email.com',
+        )
+        self.todo_list = TodoList.objects.create(
+            name='list', user=self.user,
+        )
+        self.todo = Todo.objects.create(
+            todo_list=self.todo_list,
+            description='Something'
         )
 
     def test_todo_list_requires_user(self):
@@ -136,6 +190,24 @@ class TestTodoForm(TestCase):
         self.user = get_user_model().objects.create(
              username='user', email='user@email.com',
         )
+        self.todo_list = TodoList.objects.create(
+            name='list', user=self.user,
+        )
+        self.todo = Todo.objects.create(
+            todo_list=self.todo_list,
+            description='Something'
+        )
+
+    def test_todo_form_requires_user(self):
+        """Todo forms require a user to be assigned."""
+        data = {'description': 'A Description'}
+        form = TodoForm(data=data)
+        self.assertRaises(IntegrityError, lambda: form.save())
+
+    def test_valid_todo_form(self):
+        data = self.todo
+        form = TodoForm(data=data)
+
 
 class TestTodoBulkEditForm(TestCase):
     """Test for Todo Bulk Edit Form."""
@@ -143,6 +215,7 @@ class TestTodoBulkEditForm(TestCase):
         self.user = get_user_model().objects.create(
              username='user', email='user@email.com',
         )
+
 
 class TodoTests(TestCase):
 
@@ -169,6 +242,10 @@ class TodoTests(TestCase):
     def test_create_list_url(self):
         url = reverse('create_list')
         self.assertEquals(resolve(url).func, create_list)
+
+    def test_signup_url(self):
+        url = reverse('signup')
+        self.assertEquals(resolve(url).func, signup)
 
     def test_homepage(self):
         response = self.client.get('/')
